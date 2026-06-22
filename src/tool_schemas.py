@@ -1023,17 +1023,17 @@ FUNCTION_TOOL_SCHEMAS = [
         "type": "function",
         "function": {
             "name": "manage_contact",
-            "description": "Create, update, delete, or list the user's CardDAV contacts. Use to save a new contact, update an existing one (email/phone/address), or remove one. For update/delete you need the contact's uid — call action='list' first to find it. Writes go through the same dedupe + validation as the Contacts UI.",
+            "description": "Create, update, delete, list, or view the user's CardDAV contacts. Use to save a new contact, update an existing one (email/phone/address), or remove one. For update/delete/view you need the contact's uid — call action='list' first to find it, then action='view' to see full details. Partial updates are safe: omit phones/emails to keep existing values. Writes go through the same dedupe + validation as the Contacts UI.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "action": {"type": "string", "enum": ["list", "add", "update", "delete"],
-                               "description": "list = show all contacts (with uids); add = create; update = edit by uid; delete = remove by uid."},
-                    "uid": {"type": "string", "description": "Contact UID (required for update/delete; get it from action=list)."},
+                    "action": {"type": "string", "enum": ["list", "view", "add", "update", "delete"],
+                               "description": "list = show all contacts with phones and uids; view = full details for one contact by uid; add = create; update = edit by uid (omitted fields are preserved); delete = remove by uid."},
+                    "uid": {"type": "string", "description": "Contact UID (required for view/update/delete; get it from action=list)."},
                     "name": {"type": "string", "description": "Contact's display name (for add/update)."},
                     "email": {"type": "string", "description": "Single email address (convenience for add, or the primary email for update)."},
-                    "emails": {"type": "array", "items": {"type": "string"}, "description": "Full list of email addresses (for update; first is primary)."},
-                    "phones": {"type": "array", "items": {"type": "string"}, "description": "Full list of phone numbers (for update)."},
+                    "emails": {"type": "array", "items": {"type": "string"}, "description": "Full list of email addresses (for update; first is primary). Omit to keep existing emails."},
+                    "phones": {"type": "array", "items": {"type": "string"}, "description": "Full list of phone numbers (for add/update). Omit to keep existing phones."},
                     "address": {"type": "string", "description": "Postal/mailing address as a single human-readable string."},
                 },
                 "required": ["action"]
